@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<!-- 
+  This is an HTML file — it holds the CONTENT and STRUCTURE of the page 
+  (the text, headings, buttons, links). It has no styling on its own.
+  The visual design (colors, fonts, spacing) lives in style.css.
+  The interactive behavior (menu opening, smooth scrolling) lives in script.js.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mike — Computer Science Student</title>
+  <meta name="description" content="Mike — Computer Science student focused on cybersecurity and networking.">
+
+  <!-- 
+    Google Fonts: this line downloads two typefaces from Google's servers 
+    so we don't have to store font files ourselves. 
+    Space Grotesk = headings, IBM Plex Sans = body text.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- This links our CSS file. It must sit in the same folder as this HTML file. -->
+  <style>
+/* ============================================================
+   DESIGN TOKENS
+   These are variables — define a color/size once here, then reuse
+   it everywhere below. Change a value here and it updates the
+   whole site. This is the easiest way to re-theme the site later.
+   ============================================================ */
+:root {
+  /* Color */
+  --bg: #0B0F14;           /* main background — deep navy-black, not flat black */
+  --bg-alt: #0F1620;       /* slightly lighter panel background, for section contrast */
+  --line: #1D2733;         /* subtle borders / dividers */
+  --text: #E7EBF0;         /* primary text */
+  --text-muted: #8A96A6;   /* secondary text */
+  --accent: #E8A33D;       /* amber accent — terminal/status-light feel */
+  --accent-dim: #B67F2C;   /* darker amber, for hover states */
+
+  /* Type */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+
+  /* Layout */
+  --max-width: 1080px;
+  --section-pad: 7rem;
+}
+
+/* ============================================================
+   RESET
+   Browsers apply their own default spacing/sizing to elements.
+   This removes those defaults so our own CSS is predictable.
+   ============================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Respect users who've asked their OS to reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Visible focus outline for keyboard users — accessibility basic */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(11, 15, 20, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  transition: color 0.15s ease;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+.nav-cta {
+  color: var(--text) !important;
+  border: 1px solid var(--line);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.nav-cta:hover {
+  border-color: var(--accent);
+}
+
+/* Hamburger button — hidden on desktop, shown on mobile */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.nav-toggle span {
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem 6rem;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3rem;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.hero-kicker {
+  font-family: var(--font-display);
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+.hero-text {
+  color: var(--text-muted);
+  max-width: 46ch;
+  font-size: 1.05rem;
+  margin-bottom: 2.2rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #0B0F14;
+}
+
+.btn-primary:hover {
+  background: var(--accent-dim);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.hero-graphic {
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.hero-graphic svg {
+  width: 100%;
+  height: auto;
+}
+
+.net-lines line {
+  opacity: 0.4;
+}
+
+/* ============================================================
+   SECTIONS (shared)
+   ============================================================ */
+.section {
+  padding: var(--section-pad) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-alt {
+  background: var(--bg-alt);
+}
+
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.section-intro {
+  color: var(--text-muted);
+  max-width: 60ch;
+  margin-bottom: 2.5rem;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.about-lead {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.about-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.about-block {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.2rem;
+}
+
+.about-block h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.about-block p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem 2rem;
+}
+
+.skill-group h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.skill-group li {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  padding: 0.35rem 0;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.contact-card {
+  background: var(--bg);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: background 0.15s ease;
+}
+
+.contact-card:hover {
+  background: var(--bg-alt);
+}
+
+.contact-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.contact-value {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.contact-card:hover .contact-value {
+  color: var(--accent);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+/* ============================================================
+   RESPONSIVE — tablets and phones
+   Anything inside this block only applies when the screen is
+   900px wide or narrower.
+   ============================================================ */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 3rem;
+    min-height: auto;
+  }
+
+  .hero-graphic {
+    order: -1;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --section-pad: 4.5rem;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    gap: 1.2rem;
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header">
+    <nav class="nav">
+      <a href="#home" class="nav-logo">M.</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact" class="nav-cta">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ HERO SECTION ============ -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <p class="hero-kicker">Computer Science Student</p>
+        <h1 class="hero-title">
+          Hi, I'm Mike.<br>
+          I build and secure<br>
+          the systems behind things.
+        </h1>
+        <p class="hero-text">
+          I'm studying Computer Science with a focus on cybersecurity and networking —
+          learning how systems are built so I can learn how to defend them properly.
+          Currently sharpening my skills in Python, Linux, and network fundamentals.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View My Work</a>
+          <a href="#contact" class="btn btn-ghost">Contact Me</a>
+        </div>
+      </div>
+
+      <!-- 
+        This SVG is a simple line-art network graph (dots connected by lines).
+        It's drawn directly in code — no image file needed — and ties into
+        the networking/cybersecurity theme instead of a generic decoration.
+      -->
+      <div class="hero-graphic" aria-hidden="true">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <g class="net-lines" stroke="currentColor" stroke-width="1" fill="none">
+            <line x1="80" y1="90" x2="220" y2="60"></line>
+            <line x1="220" y1="60" x2="330" y2="140"></line>
+            <line x1="80" y1="90" x2="150" y2="210"></line>
+            <line x1="150" y1="210" x2="330" y2="140"></line>
+            <line x1="150" y1="210" x2="90" y2="320"></line>
+            <line x1="150" y1="210" x2="260" y2="310"></line>
+            <line x1="260" y1="310" x2="330" y2="140"></line>
+          </g>
+          <g class="net-nodes" fill="currentColor">
+            <circle cx="80" cy="90" r="5"></circle>
+            <circle cx="220" cy="60" r="4"></circle>
+            <circle cx="330" cy="140" r="6"></circle>
+            <circle cx="150" cy="210" r="7"></circle>
+            <circle cx="90" cy="320" r="4"></circle>
+            <circle cx="260" cy="310" r="5"></circle>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT SECTION ============ -->
+    <section id="about" class="section">
+      <div class="section-inner">
+        <h2 class="section-heading">About</h2>
+        <div class="about-grid">
+          <p class="about-lead">
+            I'm a Computer Science and Mathematics student at Obáfémi Awólówò University,
+            in the Department of Computer Science and Engineering. My interest sits at the
+            intersection of how systems work and how they get broken — which is what pulled
+            me toward cybersecurity and networking specifically, rather than software
+            development alone.
+          </p>
+          <div class="about-details">
+            <div class="about-block">
+              <h3>Education</h3>
+              <p>B.Sc. Computer Science &amp; Mathematics<br>
+              Obáfémi Awólówò University, Ilé-Ifè<br>
+              Faculty of Technology — Dept. of Computer Science &amp; Engineering</p>
+            </div>
+            <div class="about-block">
+              <h3>Focus</h3>
+              <p>Cybersecurity, networking, and the systems-level thinking that
+              underpins both — building things well enough to understand how
+              to take them apart.</p>
+            </div>
+            <div class="about-block">
+              <h3>Right now</h3>
+              <p>Building foundational skills in earnest: Linux, networking
+              fundamentals, and Python, with a working portfolio to track
+              progress as it happens.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS SECTION ============ -->
+    <section id="skills" class="section section-alt">
+      <div class="section-inner">
+        <h2 class="section-heading">Skills</h2>
+        <p class="section-intro">
+          A working list — updated as I learn. Nothing here is claimed as expert-level;
+          it reflects where I currently am.
+        </p>
+
+        <!-- 
+          HOW TO ADD A SKILL: find the right category below and copy one 
+          <li>...</li> line, then change the text. That's it — no other 
+          file needs to change.
+        -->
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h3>Cybersecurity</h3>
+            <ul>
+              <li>Security fundamentals &amp; threat modeling basics</li>
+              <li>Linux system administration</li>
+              <li>Basic penetration testing concepts</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Networking</h3>
+            <ul>
+              <li>TCP/IP fundamentals</li>
+              <li>Network topology &amp; routing basics</li>
+              <li>Packet analysis (Wireshark)</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Programming</h3>
+            <ul>
+              <li>Python</li>
+              <li>C</li>
+              <li>JavaScript (learning)</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Web Development</h3>
+            <ul>
+              <li>HTML &amp; CSS</li>
+              <li>JavaScript fundamentals</li>
+              <li>Git &amp; GitHub (learning)</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Tools</h3>
+            <ul>
+              <li>Linux (Kali / Ubuntu)</li>
+              <li>Wireshark</li>
+              <li>VS Code</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT SECTION ============ -->
+    <section id="contact" class="section">
+      <div class="section-inner">
+        <h2 class="section-heading">Contact</h2>
+        <p class="section-intro">
+          Open to conversations about cybersecurity, networking, or early-career
+          opportunities. Reach me directly:
+        </p>
+        <div class="contact-grid">
+          <a class="contact-card" href="mailto:anuoni2007@gmail.com">
+            <span class="contact-label">Email</span>
+            <span class="contact-value">anuoni2007@gmail.com</span>
+          </a>
+          <a class="contact-card" href="tel:+2349077397498">
+            <span class="contact-label">Phone</span>
+            <span class="contact-value">0907 739 7498</span>
+          </a>
+          <a class="contact-card" href="https://github.com/12mike-debug" target="_blank" rel="noopener noreferrer">
+            <span class="contact-label">GitHub</span>
+            <span class="contact-value">@12mike-debug</span>
+          </a>
+          <a class="contact-card" href="https://x.com/_mike_xg" target="_blank" rel="noopener noreferrer">
+            <span class="contact-label">X</span>
+            <span class="contact-value">@_mike_xg</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Mike. Built from scratch, one section at a time.</p>
+  </footer>
+
+  <!-- This links our JavaScript file. It must sit next to this HTML file too. -->
+  <script>
+// ============================================================
+// This file adds interactivity. Right now it does one job:
+// open/close the mobile navigation menu when the hamburger
+// button (the three-line icon) is tapped on small screens.
+// ============================================================
+
+// "DOM" = Document Object Model. It's just the browser's live
+// representation of everything on the page — every heading,
+// button, link. document.getElementById() reaches into that
+// representation and grabs one specific element by its "id".
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+
+// addEventListener says: "when this happens, run this function."
+// Here: when the hamburger button is clicked, toggle the menu.
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  // aria-expanded tells screen readers whether the menu is open —
+  // it doesn't change how the page looks, only how it's announced.
+  navToggle.setAttribute('aria-expanded', isOpen);
+});
+
+// Close the mobile menu automatically after tapping a link,
+// so the menu doesn't stay open over the section you jumped to.
+navLinks.querySelectorAll('a').forEach((link) => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', false);
+  });
+});
+
+  </script>
+</body>
+</html>
